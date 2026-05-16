@@ -1,0 +1,11 @@
+services:
+  db:
+    image: postgres:15
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: asdf
+      POSTGRES_USER: asdf
+      POSTGRES_DB: crud_api_rails
+    ports:
+      - "5432:5432"

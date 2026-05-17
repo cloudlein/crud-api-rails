@@ -1,24 +1,41 @@
-# README
+# CRUD API Rails
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a Ruby on Rails API project.
 
-Things you may want to cover:
+## Prerequisites
+* Ruby installed on your machine
+* Docker and Docker Compose (used for the PostgreSQL database)
 
-* Ruby version
+## Setup & Installation
 
-* System dependencies
+### 1. Start the Database
+This project uses Docker Compose to run the PostgreSQL database. Run the following command to start the database container in the background:
+```bash
+docker-compose up -d
+```
 
-* Configuration
+### 2. Install Dependencies
+Install the required Ruby gems:
+```bash
+bundle install
+```
 
-* Database creation
+### 3. Database Setup
+Create the database and run the migrations:
+```bash
+rails db:create
+rails db:migrate
+```
 
-* Database initialization
+### 4. Run the Application
+Start the Rails server:
+```bash
+rails server
+```
+The application will now be running at `http://localhost:3000`.
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Stopping the Database
+When you are finished working, you can stop the Docker container by running:
+```bash
+docker-compose down
+```

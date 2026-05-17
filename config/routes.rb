@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "authors/index"
+  get "author/index"
   resources :books
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -8,6 +10,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-
+  resources :authors, only: [:index, :show, :update, :destroy, :create] do
+    resources :books, only: [:index]
+  end
 
 end

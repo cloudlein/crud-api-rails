@@ -7,6 +7,3 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-
-Book.create!(title: "Temanku Teroris?", author: "Noor Huda Ismail", genre: "Action")
-Book.create!(title: "Hujan", author: "Tere Liye", genre: "Romance")

@@ -11,10 +11,10 @@ This roadmap focuses on evolving the current simple Book CRUD API into a robust,
 ## Phase 2: Relational Data (Beginner-Intermediate)
 *Objective: Move beyond flat tables and manage relational data.*
 - [x] **Extract Author Model**: Create an `Author` model and establish a one-to-many relationship (`Author has_many :books`, `Book belongs_to :author`). 
-- [x] **Extract Category/Genre Model**: Create a `Category` model and establish a many-to-many relationship using a join table (`Book has_many :categories, through: :book_categories`).
-- [ ] **Nested Routing**: Update routes to support nested resources based on the database design:
-  - `GET /authors/:author_id/books` (List all books written by a specific author)
-  - `GET /genres/:genre_id/books` (List all books belonging to a specific genre)
+- [x] **Extract Category/Genre Model**: Create a `Genre` model and establish a many-to-many relationship using a join table (`Book has_many :genres, through: :book_genres`).
+- [x] **Nested Routing**: Update routes to support nested resources based on the database design:
+  - [x] `GET /authors/:author_id/books` (List all books written by a specific author)
+  - [x] `GET /genres/:genre_id/books` (List all books belonging to a specific genre)
 
 ## Phase 3: Advanced Querying (Intermediate)
 *Objective: Make the API practical for frontend consumption.*

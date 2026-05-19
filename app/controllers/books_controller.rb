@@ -4,10 +4,10 @@ class BooksController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
   def index
     if params[:author_id]
-      author = Author.find(id: params[:author_id])
+      author = Author.find(params[:author_id])
       books  = author.books
     elsif params[:genre_id]
-      genre = Genre.find(id: params[:genre_id])
+      genre = Genre.find(params[:genre_id])
       books  = genre.books
     else
       books = Book.all
@@ -43,14 +43,22 @@ class BooksController < ApplicationController
     {
       id: book.id,
       title: book.title,
-      author: book.author,
-      genre: book.genre,
+      author: {
+        id: book.author&.id,
+        name: "#{book.author&.first_name} #{book.author&.last_name}".strip
+      },
+      genres: book.genres.map { |genre|
+        {
+          id: genre.id,
+          name: genre.name
+        }
+      },
       created_at: book.created_at,
       updated_at: book.updated_at
     }
   end
   def book_params
-    params.permit(:author, :genre, :title)
+    params.permit(:title, :author_id, genre_ids: [])
   end
 
   def render_not_found_response

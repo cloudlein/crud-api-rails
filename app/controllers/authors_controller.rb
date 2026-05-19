@@ -23,6 +23,12 @@ class AuthorsController < ApplicationController
     render json: serialize_author(author), status: :ok
   end
 
+  def destroy
+    author = Author.find(params[:id])
+    author.destroy
+    render json: serialize_author(author), status: :ok
+  end
+
   private
 
   def serialize_author(author)

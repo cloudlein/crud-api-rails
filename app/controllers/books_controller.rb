@@ -22,12 +22,18 @@ class BooksController < ApplicationController
   end
 
   def create
-    book = Book.create!(book_params)
+    dto = BookCreationDTO.new(book_params)
+    return render json: {errors: dto.errors}, status: :unprocessable_entity unless dto.valid
+
+    book = BookCreationService.call(dto)
     render json: serialize_book(book), status: :created
   end
 
   def update
-    book = Book.find(params[:id])
+    dto = BookUpdateDTO.new(book_params)
+    book = Book.find(params[dto.old_book_id])
+
+
     book.update!(book_params)
     render json: serialize_book(book), status: :ok
   end

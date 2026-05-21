@@ -30,12 +30,17 @@ class BooksController < ApplicationController
   end
 
   def update
-    dto = BookUpdateDTO.new(book_params)
-    book = Book.find(params[dto.old_book_id])
+    dto = BookUpdateDTO.new(book_params.merge(id: params[:id]))
 
+    if dto.valid?
+      book = BookUpdateService.call(dto)
+      render json: serialize_book(book), status: :ok
+    else
+      render json: {
+        errors: dto.errors.full_messages
+      }, status: :unprocessable_entity
+    end
 
-    book.update!(book_params)
-    render json: serialize_book(book), status: :ok
   end
 
   def destroy

@@ -3,9 +3,15 @@
 class BookUpdateDTO
   include ActiveModel::Model
 
-  attr_accessor :old_book_id, :title, :author_id, :genre_ids
+  attr_accessor :id, :title, :author_id, :genre_ids
 
-  validates :old_book_id, numericality: { only_integer: true },presence: true
+  validates :id, numericality: { only_integer: true }, presence: true
+  validates :title, length: { minimum: 3 }, presence: true
+  validates :author_id, numericality: { only_integer: true }, allow_nil: true
+
+
+  validate :author_must_exists
+  validate :genre_must_exists
 
   def author_must_exists
     return if author_id.blank?

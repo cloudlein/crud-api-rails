@@ -1,17 +1,29 @@
 class GenresController < ApplicationController
   def index
     genres = Genre.all
+
+    # render json: genres
     render json: genres.map {
       |genre| serialize_genre(genre)
     }
+
+    # render :index
   end
 
   def show
-    genre = genre.find(params[:id])
+    genre = Genre.find(params[:id])
     render json: serialize_genre(genre)
   end
 
   def create
+    genre = Genre.new(param_genres)
+    puts genre.valid?
+    puts genre.errors.full_messages
+
+    unless genre.valid?
+      return render json: {message: "gagal bang", data: genre.errors}, status: :bad_request
+    end
+
     genre = Genre.create!(param_genres)
     render json: serialize_genre(genre), status: :created
   end

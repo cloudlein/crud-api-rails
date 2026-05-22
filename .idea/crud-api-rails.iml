@@ -69,6 +69,7 @@
     <orderEntry type="library" scope="PROVIDED" name="net-smtp (v0.5.1, ruby-4.0.3-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nio4r (v2.7.5, ruby-4.0.3-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.19.3, ruby-4.0.3-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="pagy (v43.5.4, ruby-4.0.3-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pg (v1.6.3, ruby-4.0.3-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="pp (v0.6.3, ruby-4.0.3-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="prettyprint (v0.2.0, ruby-4.0.3-p0) [gem]" level="application" />
@@ -98,6 +99,7 @@
     <orderEntry type="library" scope="PROVIDED" name="useragent (v0.16.11, ruby-4.0.3-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-driver (v0.8.0, ruby-4.0.3-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="websocket-extensions (v0.1.5, ruby-4.0.3-p0) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="yaml (v0.4.0, ruby-4.0.3-p0) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="zeitwerk (v2.7.5, ruby-4.0.3-p0) [gem]" level="application" />
   </component>
   <component name="RModuleSettingsStorage">

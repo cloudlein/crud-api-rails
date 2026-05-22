@@ -31,9 +31,9 @@ This roadmap focuses on evolving the current simple Book CRUD API into a robust,
 - [ ] **Endpoint Protection**: Secure CUD operations.
 - [ ] **RBAC**: Add role management for granular access.
 
-## Phase 6: Service Objects, DTOs & Async (Pending)
-*Objective: Encapsulate business logic and data input/output.*
-- [ ] **DTOs**: Implement Data Transfer Objects to handle complex input validation and data boundary definitions between layers.
+## Phase 6: Service Objects, Jbuilder & Async (Pending)
+*Objective: Encapsulate business logic and JSON serialization.*
+- [ ] **Jbuilder**: Implement Jbuilder templates to handle JSON response serialization and formatting.
 - [ ] **Service Objects**: Refactor complex controller actions (e.g., `BookCreation`) into focused Service Objects.
 - [ ] **Background Jobs**: Integrate `SolidQueue` for asynchronous operations.
 

@@ -1,74 +1,56 @@
+# frozen_string_literal: true
+
 class GenresController < ApplicationController
+  include Paginatable
+
+  # GET /genres
+  # GET /genres?page=1&limit=10
   def index
-    genres = Genre.all
+    collection = Genre.all
 
-    # render json: genres
-    render json: genres.map {
-      |genre| serialize_genre(genre)
-    }
-
-    # render :index
+    @pagy, @genres = paginate(collection)
   end
 
+  # GET /genres/:id
   def show
-    genre = Genre.find(params[:id])
-    render json: serialize_genre(genre)
+    @genre = Genre.find(params[:id])
   end
 
+  # POST /genres
   def create
-    genre = Genre.new(param_genres)
-    puts genre.valid?
-    puts genre.errors.full_messages
+    @genre = Genre.new(genre_params)
 
-    unless genre.valid?
-      return render json: {message: "gagal bang", data: genre.errors}, status: :bad_request
+    unless @genre.valid?
+      return render json: { errors: @genre.errors.full_messages },
+                    status: :unprocessable_entity
     end
 
-    genre = Genre.create!(param_genres)
-    render json: serialize_genre(genre), status: :created
+    @genre.save!
+    render :create, status: :created
   end
 
+  # PATCH/PUT /genres/:id
   def update
-    genre = Genre.find(params[:id])
-    genre.update!(param_genres)
-    render json: serialize_genre(genre), status: :ok
+    @genre = Genre.find(params[:id])
+
+    unless @genre.update(genre_params)
+      return render json: { errors: @genre.errors.full_messages },
+                    status: :unprocessable_entity
+    end
+
+    render :update, status: :ok
   end
 
+  # DELETE /genres/:id
   def destroy
-    genre = Genre.find(params[:id])
-    genre.destroy
-    render json: serialize_genre(genre), status: :ok
+    Genre.find(params[:id]).destroy
+    head :no_content
   end
 
   private
 
-  def serialize_genre(genre)
-    {
-      id: genre.id,
-      name: genre.name,
-      slug: genre.slug,
-      created_at: genre.created_at,
-      updated_at: genre.updated_at
-    }
-  end
-
-
-  def param_genres
-    params.permit(
-      :name,
-      :slug
-    )
-  end
-
-
-  def render_not_found_response
-    render json: { error: "Book not found" }, status: :not_found
-  end
-
-  def render_unprocessable_entity_response(invalid)
-    render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
+  def genre_params
+    params.permit(:name, :slug)
   end
 
 end
-
-

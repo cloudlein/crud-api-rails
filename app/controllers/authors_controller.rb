@@ -3,47 +3,39 @@ class AuthorsController < ApplicationController
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
 
   def index
-    authors = Author.all
-    render json: authors.map { |author| serialize_author(author) }, status: :ok
+    collection = Author.all
+    @pagy, @author = paginate(collection)
   end
 
   def show
-    author = Author.find(params[:id])
-    render json: serialize_author(author), status: :ok
+    @author = Author.find(params[:id])
   end
 
   def create
-    author = Author.create!(param_author)
-    render json: serialize_author(author), status: :created
+    @author = Author.new(param_author)
+    unless @author.valid?
+      return render json: { errors: @author.errors.full_messages },
+             status: :unprocessable_entity
+    end
+    @author.save!
+    render :create, status: :created
   end
 
   def update
-    author = Author.find(params[:id])
-    author.update!(param_author)
-    render json: serialize_author(author), status: :ok
+    @author = Author.find(params[:id])
+    unless @author.update(param_author)
+      return render json: { errors: @author.errors.full_messages} , 
+      status: :unprocessable_entity
+    end
+    render :update, status: :ok
   end
 
   def destroy
-    author = Author.find(params[:id])
-    author.destroy
-    render json: serialize_author(author), status: :ok
+    Author.find(params[:id]).destroy
+    head :no_content
   end
 
   private
-
-  def serialize_author(author)
-    {
-      id: author.id,
-      first_name: author.first_name,
-      last_name: author.last_name,
-      pen_name: author.pen_name,
-      birth_date: author.birth_date,
-      bio: author.bio,
-      nationality: author.nationality,
-      created_at: author.created_at,
-      updated_at: author.updated_at
-    }
-  end
 
   def param_author
     params.permit(
@@ -55,13 +47,4 @@ class AuthorsController < ApplicationController
       :nationality,
     )
   end
-
-  def render_not_found_response
-    render json: { error: "Book not found" }, status: :not_found
-  end
-
-  def render_unprocessable_entity_response(invalid)
-    render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
-  end
-
 end

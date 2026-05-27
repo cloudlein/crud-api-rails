@@ -19,3 +19,4 @@ group :development, :test do
 end
 
 gem "pagy", "~> 43.5"
+gem "jbuilder"

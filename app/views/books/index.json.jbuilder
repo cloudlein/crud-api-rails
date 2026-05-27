@@ -1,5 +1,5 @@
 json.data do
-  json.array! @genres, partial: 'genres/genre', as: :genre
+  json.array! @books, partial: "books/book", as: :book
 end
 
 json.partial! 'shared/pagination_meta', pagy: @pagy

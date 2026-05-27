@@ -1,48 +1,55 @@
+# frozen_string_literal: true
+
 class BooksController < ApplicationController
+  include Paginatable
 
-  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
-  rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+  # GET /books
+  # GET /books?author_id=1&page=1&limit=10
+  # GET /books?genre_id=2&page=2
   def index
-    if params[:author_id]
-      author = Author.find(params[:author_id])
-      books  = author.books
-    elsif params[:genre_id]
-      genre = Genre.find(params[:genre_id])
-      books  = genre.books
-    else
-      books = Book.all
-    end
+    collection =
+      if params[:author_id]
+        Author.find(params[:author_id]).books
+      elsif params[:genre_id]
+        Genre.find(params[:genre_id]).books
+      else
+        Book.all
+      end
 
-    render json: books.map { |book| serialize_book(book) }, status: :ok
+    @pagy, @books = paginate(collection)
   end
 
+  # GET /books/:id
   def show
-    book = Book.find(params[:id])
-    render json: serialize_book(book), status: :ok
+    @book = Book.find(params[:id])
   end
 
+  # POST /books
   def create
-    dto = BookCreationDTO.new(book_params)
-    return render json: {errors: dto.errors}, status: :unprocessable_entity unless dto.valid
+    @book = Book.new(book_params)
 
-    book = BookCreationService.call(dto)
-    render json: serialize_book(book), status: :created
-  end
-
-  def update
-    dto = BookUpdateDTO.new(book_params.merge(id: params[:id]))
-
-    if dto.valid?
-      book = BookUpdateService.call(dto)
-      render json: serialize_book(book), status: :ok
-    else
-      render json: {
-        errors: dto.errors.full_messages
-      }, status: :unprocessable_entity
+    unless @book.valid?
+      return render json: { errors: @book.errors.full_messages },
+                    status: :unprocessable_entity
     end
 
+    @book.save!
+    render :create, status: :created
   end
 
+  # PATCH/PUT /books/:id
+  def update
+    @book = Book.find(params[:id])
+
+    unless @book.update(book_params)
+      return render json: { errors: @book.errors.full_messages },
+                    status: :unprocessable_entity
+    end
+
+    render :update, status: :ok
+  end
+
+  # DELETE /books/:id
   def destroy
     Book.find(params[:id]).destroy
     head :no_content
@@ -50,36 +57,8 @@ class BooksController < ApplicationController
 
   private
 
-  def serialize_book(book)
-    {
-      id: book.id,
-      title: book.title,
-      author: {
-        id: book.author&.id,
-        name: "#{book.author&.first_name} #{book.author&.last_name}".strip
-      },
-      genres: book.genres.map { |genre|
-        {
-          id: genre.id,
-          name: genre.name
-        }
-      },
-      created_at: book.created_at,
-      updated_at: book.updated_at
-    }
-  end
   def book_params
     params.permit(:title, :author_id, genre_ids: [])
   end
-
-  def render_not_found_response
-    render json: { error: "Book not found" }, status: :not_found
-  end
-
-  def render_unprocessable_entity_response(invalid)
-    render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
-  end
-
-
 
 end

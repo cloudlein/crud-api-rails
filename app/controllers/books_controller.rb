@@ -27,12 +27,6 @@ class BooksController < ApplicationController
   # POST /books
   def create
     @book = Book.new(book_params)
-
-    unless @book.valid?
-      return render json: { errors: @book.errors.full_messages },
-                    status: :unprocessable_entity
-    end
-
     @book.save!
     render :create, status: :created
   end
@@ -40,12 +34,7 @@ class BooksController < ApplicationController
   # PATCH/PUT /books/:id
   def update
     @book = Book.find(params[:id])
-
-    unless @book.update(book_params)
-      return render json: { errors: @book.errors.full_messages },
-                    status: :unprocessable_entity
-    end
-
+    @book.update!(book_params)
     render :update, status: :ok
   end
 

@@ -4,9 +4,9 @@ class GenresController < ApplicationController
   include Paginatable
 
   # GET /genres
-  # GET /genres?page=1&limit=10
+  # GET /genres?name=action&sort_by=name&sort_dir=asc&page=1&limit=10
   def index
-    collection = Genre.all
+    collection = GenreQuery.new(Genre.all, params).call
 
     @pagy, @genres = paginate(collection)
   end
@@ -19,12 +19,6 @@ class GenresController < ApplicationController
   # POST /genres
   def create
     @genre = Genre.new(genre_params)
-
-    unless @genre.valid?
-      return render json: { errors: @genre.errors.full_messages },
-                    status: :unprocessable_entity
-    end
-
     @genre.save!
     render :create, status: :created
   end
@@ -32,12 +26,7 @@ class GenresController < ApplicationController
   # PATCH/PUT /genres/:id
   def update
     @genre = Genre.find(params[:id])
-
-    unless @genre.update(genre_params)
-      return render json: { errors: @genre.errors.full_messages },
-                    status: :unprocessable_entity
-    end
-
+    @genre.update!(genre_params)
     render :update, status: :ok
   end
 

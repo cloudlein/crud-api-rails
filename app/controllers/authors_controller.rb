@@ -1,35 +1,35 @@
-class AuthorsController < ApplicationController
-  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
-  rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+# frozen_string_literal: true
 
+class AuthorsController < ApplicationController
+  include Paginatable
+
+  # GET /authors
+  # GET /authors?page=1&limit=10
   def index
     collection = Author.all
-    @pagy, @author = paginate(collection)
+    @pagy, @authors = paginate(collection)
   end
 
+  # GET /authors/:id
   def show
     @author = Author.find(params[:id])
   end
 
+  # POST /authors
   def create
-    @author = Author.new(param_author)
-    unless @author.valid?
-      return render json: { errors: @author.errors.full_messages },
-             status: :unprocessable_entity
-    end
+    @author = Author.new(author_params)
     @author.save!
     render :create, status: :created
   end
 
+  # PATCH/PUT /authors/:id
   def update
     @author = Author.find(params[:id])
-    unless @author.update(param_author)
-      return render json: { errors: @author.errors.full_messages} , 
-      status: :unprocessable_entity
-    end
+    @author.update!(author_params)
     render :update, status: :ok
   end
 
+  # DELETE /authors/:id
   def destroy
     Author.find(params[:id]).destroy
     head :no_content
@@ -37,14 +37,14 @@ class AuthorsController < ApplicationController
 
   private
 
-  def param_author
+  def author_params
     params.permit(
       :first_name,
       :last_name,
       :pen_name,
       :birth_date,
       :bio,
-      :nationality,
+      :nationality
     )
   end
 end

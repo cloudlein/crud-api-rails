@@ -1,7 +1,4 @@
 Rails.application.routes.draw do
-  get "genres/index"
-  get "authors/index"
-  get "author/index"
   resources :books, only: [:index, :show, :update, :destroy, :create]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

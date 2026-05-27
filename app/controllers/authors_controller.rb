@@ -6,7 +6,7 @@ class AuthorsController < ApplicationController
   # GET /authors
   # GET /authors?page=1&limit=10
   def index
-    collection = Author.all
+    collection = AuthorQuery.new(Author.all, params).call
     @pagy, @authors = paginate(collection)
   end
 

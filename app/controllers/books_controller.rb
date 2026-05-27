@@ -16,6 +16,7 @@ class BooksController < ApplicationController
         Book.all
       end
 
+    collection = BookQuery.new(collection, params).call
     @pagy, @books = paginate(collection)
   end
 

@@ -16,4 +16,6 @@ Rails.application.routes.draw do
     resources :books, only: [:index]
   end
 
+  resources :users, only: [:index, :show, :update, :destroy, :create]
+
 end

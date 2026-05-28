@@ -20,3 +20,4 @@ end
 
 gem "pagy", "~> 43.5"
 gem "jbuilder"
+gem "bcrypt", "~> 3.1.22"

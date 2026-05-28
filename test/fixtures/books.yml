@@ -2,10 +2,8 @@
 
 one:
   title: MyString
-  author: MyString
-  genre: MyString
+  author: one
 
 two:
   title: MyString
-  author: MyString
-  genre: MyString
+  author: two

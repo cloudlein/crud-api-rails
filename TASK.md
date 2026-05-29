@@ -52,9 +52,9 @@ Table: users
 Indexes: index_users_on_email (unique)
 ```
 
-- [ ] **Create `users` migration**: `rails g model User name:string email:string:uniq password_digest:string role:string`
-  - Add `default: 'user'` and `null: false` constraints in migration.
-  - Add `has_secure_password` + `validates :email, uniqueness: true` in model.
+- [x] **Create `users` migration**: `rails g model User name:string email:string:uniq password_digest:string role:string`
+  - [x] Add `default: 'user'` and `null: false` constraints in migration.
+  - [x] Add `has_secure_password` + `validates :email, uniqueness: true` in model.
 - [ ] **JWT Auth**: Implement user authentication (register / login → return JWT token).
 - [ ] **Endpoint Protection**: Secure CUD operations with `before_action :authenticate_user!`.
 - [ ] **RBAC**: Add role management — admin-only access for destructive actions.

@@ -2,6 +2,7 @@
 
 class BooksController < ApplicationController
   include Paginatable
+  before_action :require_admin, only: [:destroy]
 
   # GET /books
   # GET /books?author_id=1&page=1&limit=10
@@ -27,21 +28,23 @@ class BooksController < ApplicationController
 
   # POST /books
   def create
-    @book = Book.new(book_params)
-    @book.save!
+    service = Books::CreateService.new(book_params)
+    service.call
+    @book = service.book
     render :create, status: :created
   end
 
   # PATCH/PUT /books/:id
   def update
-    @book = Book.find(params[:id])
-    @book.update!(book_params)
+    service = Books::UpdateService.new(params[:id], book_params)
+    service.call
+    @book = service.book
     render :update, status: :ok
   end
 
   # DELETE /books/:id
   def destroy
-    Book.find(params[:id]).destroy
+    Books::DestroyService.new(params[:id]).call
     head :no_content
   end
 

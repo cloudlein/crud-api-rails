@@ -2,6 +2,7 @@
 
 class AuthorsController < ApplicationController
   include Paginatable
+  before_action :require_admin, only: [:destroy]
 
   # GET /authors
   # GET /authors?page=1&limit=10
@@ -17,21 +18,23 @@ class AuthorsController < ApplicationController
 
   # POST /authors
   def create
-    @author = Author.new(author_params)
-    @author.save!
+    service = Authors::CreateService.new(author_params)
+    service.call
+    @author = service.author
     render :create, status: :created
   end
 
   # PATCH/PUT /authors/:id
   def update
-    @author = Author.find(params[:id])
-    @author.update!(author_params)
+    service = Authors::UpdateService.new(params[:id], author_params)
+    service.call
+    @author = service.author
     render :update, status: :ok
   end
 
   # DELETE /authors/:id
   def destroy
-    Author.find(params[:id]).destroy
+    Authors::DestroyService.new(params[:id]).call
     head :no_content
   end
 

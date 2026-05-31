@@ -2,7 +2,8 @@
 
 class GenresController < ApplicationController
   include Paginatable
-
+  before_action :require_admin, only: [:destroy]
+  
   # GET /genres
   # GET /genres?name=action&sort_by=name&sort_dir=asc&page=1&limit=10
   def index
@@ -18,21 +19,23 @@ class GenresController < ApplicationController
 
   # POST /genres
   def create
-    @genre = Genre.new(genre_params)
-    @genre.save!
+    service = Genres::CreateService.new(genre_params)
+    service.call
+    @genre = service.genre
     render :create, status: :created
   end
 
   # PATCH/PUT /genres/:id
   def update
-    @genre = Genre.find(params[:id])
-    @genre.update!(genre_params)
+    service = Genres::UpdateService.new(params[:id], genre_params)
+    service.call
+    @genre = service.genre
     render :update, status: :ok
   end
 
   # DELETE /genres/:id
   def destroy
-    Genre.find(params[:id]).destroy
+    Genres::DestroyService.new(params[:id]).call
     head :no_content
   end
 

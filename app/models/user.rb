@@ -4,8 +4,7 @@ class User < ApplicationRecord
   enum :role, { user: "user", admin: "admin"}
 
   validates :name, presence: true
-  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :password, presence: true
-  validates :role, presence: true, inclusion: { in: ["user", "admin"] }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :role, presence: true
 
 end

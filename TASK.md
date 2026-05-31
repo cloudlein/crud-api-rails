@@ -30,7 +30,7 @@ This roadmap focuses on evolving the current simple Book CRUD API into a robust,
 - [x] **Model Validations**: Added validations to `Book`, `Genre`, and `Author` models.
 - [x] **Jbuilder**: Implemented Jbuilder templates for all resources (Books, Authors, Genres) with shared `_pagination_meta` partial.
 
-## Phase 5: Authentication & Authorization (Pending)
+## Phase 5: Authentication & Authorization (Completed)
 *Objective: Secure the API with JWT and RBAC.*
 
 ### 5.0 Pre-requisite: `users` Table
@@ -55,13 +55,32 @@ Indexes: index_users_on_email (unique)
 - [x] **Create `users` migration**: `rails g model User name:string email:string:uniq password_digest:string role:string`
   - [x] Add `default: 'user'` and `null: false` constraints in migration.
   - [x] Add `has_secure_password` + `validates :email, uniqueness: true` in model.
-- [ ] **JWT Auth**: Implement user authentication (register / login → return JWT token).
-- [ ] **Endpoint Protection**: Secure CUD operations with `before_action :authenticate_user!`.
-- [ ] **RBAC**: Add role management — admin-only access for destructive actions.
+- [x] **JWT Auth**: Implement user authentication (register / login → return JWT token).
+  - [x] `JsonWebToken` service class with `encode` / `decode` using `jwt` gem.
+  - [x] `POST /auth/register` → creates user, returns token + user JSON.
+  - [x] `POST /auth/login` → authenticates user, returns token + user JSON.
+  - [x] `AuthenticationController` with `skip_before_action` for public endpoints.
+- [x] **Endpoint Protection**: Secure all endpoints with `before_action :authenticate_user` in `ApplicationController`.
+  - [x] `authenticate_user` reads `Authorization: Bearer <token>` header.
+  - [x] Returns `401 Unauthorized` if token is missing or invalid.
+  - [x] `current_user` helper method exposes `@current_user` to all controllers.
+- [x] **RBAC**: Add role management — admin-only access for destructive actions.
+  - [x] `require_admin` method in `ApplicationController`, returns `403 Forbidden` for non-admins.
+  - [x] `before_action :require_admin, only: [:destroy]` on `BooksController`, `AuthorsController`, `GenresController`, `UsersController`.
+  - [x] `User` model uses `enum :role` with `user` / `admin` values.
+- [x] **Users CRUD**: Full resource management for `User` model.
+  - [x] `UsersController` with index, show, create, update, destroy.
+  - [x] `UserQuery` object with filter by name, email, role + sorting.
+  - [x] Jbuilder templates for all `User` responses (`index`, `show`, `create`, `update`).
 
-## Phase 6: Service Objects & Async (Pending)
+## Phase 6: Service Objects & Async (Partial)
 *Objective: Encapsulate business logic.*
-- [ ] **Service Objects**: Refactor complex controller actions (e.g., `BookCreation`) into focused Service Objects.
+- [x] **Service Objects**: Refactor all CUD controller actions into focused Service Objects.
+  - [x] `Books::CreateService`, `Books::UpdateService`, `Books::DestroyService`
+  - [x] `Authors::CreateService`, `Authors::UpdateService`, `Authors::DestroyService`
+  - [x] `Genres::CreateService`, `Genres::UpdateService`, `Genres::DestroyService`
+  - [x] `Users::CreateService`, `Users::UpdateService`, `Users::DestroyService`
+  - [x] All controllers (`BooksController`, `AuthorsController`, `GenresController`, `UsersController`) delegating CUD operations to their respective services.
 - [ ] **Background Jobs**: Integrate `SolidQueue` for asynchronous operations.
 
 ## Phase 7: Testing & Documentation (Pending)

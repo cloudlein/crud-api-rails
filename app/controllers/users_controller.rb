@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
     include Paginatable
+      before_action :require_admin, only: [:destroy]
 
     def index 
         collection = UserQuery.new(User.all, params).call
@@ -11,19 +12,21 @@ class UsersController < ApplicationController
     end
 
     def create
-        @user = User.new(user_params)
-        @user.save!
+        service = Users::CreateService.new(user_params)
+        service.call
+        @user = service.user
         render :create, status: :created
     end
 
     def update
-        @user = User.find(params[:id])
-        @user.update!(user_params)
+        service = Users::UpdateService.new(params[:id], user_params)
+        service.call
+        @user = service.user
         render :update, status: :ok
     end
 
     def destroy
-        User.find(params[:id]).destroy
+        Users::DestroyService.new(params[:id]).call
         head :no_content
     end
 

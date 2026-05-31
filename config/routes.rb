@@ -18,4 +18,6 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :show, :update, :destroy, :create]
 
+  post "auth/register", to: "authentication#register"
+  post "auth/login",    to: "authentication#login"
 end

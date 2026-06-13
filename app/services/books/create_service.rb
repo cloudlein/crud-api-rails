@@ -8,8 +8,12 @@ module Books
     end
 
     def call
-      @book.save!
-      true
+      if @book.save
+        NotifyNewBookJob.perform_later(@book.id)
+        true
+      else
+        false
+      end
     end
   end
 end

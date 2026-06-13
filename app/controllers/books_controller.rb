@@ -8,16 +8,7 @@ class BooksController < ApplicationController
   # GET /books?author_id=1&page=1&limit=10
   # GET /books?genre_id=2&page=2
   def index
-    collection =
-      if params[:author_id]
-        Author.find(params[:author_id]).books
-      elsif params[:genre_id]
-        Genre.find(params[:genre_id]).books
-      else
-        Book.all
-      end
-
-    collection = BookQuery.new(collection, params).call
+    collection = BookQuery.new(params).call
     @pagy, @books = paginate(collection)
   end
 

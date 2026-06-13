@@ -5,9 +5,9 @@ class BookQuery
   DEFAULT_SORT_DIR  = "asc"
 
 
-  def initialize(relation = Book.all, params = {})
-    @relation = relation
+  def initialize(params = {})
     @params   = params
+    @relation = build_base_relation
   end
 
   def call
@@ -18,6 +18,16 @@ class BookQuery
   end
 
   private
+
+  def build_base_relation
+    if @params[:author_id]
+      Author.find(@params[:author_id]).books
+    elsif @params[:genre_id]
+      Genre.find(@params[:genre_id]).books
+    else
+      Book.all
+    end
+  end
 
   # Filter: WHERE title ILIKE '%keyword%'
   def filter_by_title(relation)

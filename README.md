@@ -22,15 +22,23 @@ bundle install
 
 ### 3. Database Setup
 Create the database and run the migrations:
+
+**If running locally (connected to Docker database):**
 ```bash
-rails db:create
-rails db:migrate
+bin/rails db:create
+bin/rails db:migrate
+```
+
+**If running inside Docker container:**
+```bash
+docker-compose exec app bin/rails db:create
+docker-compose exec app bin/rails db:migrate
 ```
 
 ### 4. Run the Application
 Start the Rails server:
 ```bash
-rails server
+bin/rails server
 ```
 The application will now be running at `http://localhost:3000`.
 

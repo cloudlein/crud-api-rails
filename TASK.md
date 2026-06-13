@@ -73,7 +73,7 @@ Indexes: index_users_on_email (unique)
   - [x] `UserQuery` object with filter by name, email, role + sorting.
   - [x] Jbuilder templates for all `User` responses (`index`, `show`, `create`, `update`).
 
-## Phase 6: Service Objects & Async (Partial)
+## Phase 6: Service Objects & Async (Completed)
 *Objective: Encapsulate business logic.*
 - [x] **Service Objects**: Refactor all CUD controller actions into focused Service Objects.
   - [x] `Books::CreateService`, `Books::UpdateService`, `Books::DestroyService`
@@ -81,22 +81,22 @@ Indexes: index_users_on_email (unique)
   - [x] `Genres::CreateService`, `Genres::UpdateService`, `Genres::DestroyService`
   - [x] `Users::CreateService`, `Users::UpdateService`, `Users::DestroyService`
   - [x] All controllers (`BooksController`, `AuthorsController`, `GenresController`, `UsersController`) delegating CUD operations to their respective services.
-- [ ] **Background Jobs**: Integrate `SolidQueue` for asynchronous operations.
+- [x] **Background Jobs**: Integrate `SolidQueue` for asynchronous operations.
 
 ## Phase 7: Testing & Documentation (Pending)
 *Objective: Ensure quality and discoverability.*
 
 ### Unit Tests
-- [ ] **Setup RSpec & FactoryBot**
+- [x] **Setup RSpec & FactoryBot**
   - Add `rspec-rails`, `factory_bot_rails`, `faker`, `shoulda-matchers` to `Gemfile`.
   - Run `rails generate rspec:install`.
   - Configure `FactoryBot` syntax methods in `spec/rails_helper.rb`.
-- [ ] **Model Specs** (`spec/models/`)
+- [x] **Model Specs** (`spec/models/`)
   - `user_spec.rb` — validations (presence, email uniqueness, role default), `has_secure_password`.
   - `book_spec.rb` — presence/length validations, associations (`belongs_to :author`, HABTM genres).
   - `author_spec.rb` — presence validations, `has_many :books` association.
   - `genre_spec.rb` — presence/uniqueness validations, `has_and_belongs_to_many :books`.
-- [ ] **Query Object Specs** (`spec/queries/`)
+- [x] **Query Object Specs** (`spec/queries/`)
   - `book_query_spec.rb` — filtering by title/author/genre, sorting asc/desc.
   - `author_query_spec.rb` — filtering by name, sorting.
   - `genre_query_spec.rb` — filtering by name.
@@ -106,7 +106,7 @@ Indexes: index_users_on_email (unique)
   - `genres_spec.rb` — CRUD + nested `genres/:id/books` endpoint.
   - `sessions_spec.rb` *(Phase 5)* — login success, invalid credentials → 401.
   - Protected endpoints → 401 without token, 403 for insufficient role.
-- [ ] **Factories** (`spec/factories/`)
+- [x] **Factories** (`spec/factories/`)
   - `users.rb`, `books.rb`, `authors.rb`, `genres.rb`.
 
 ### Documentation

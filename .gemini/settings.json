@@ -1,0 +1,10 @@
+{
+  "skills": {
+    "disabled": [
+      "caveman-stats",
+      "caveman-review",
+      "caveman-commit",
+      "caveman-compress"
+    ]
+  }
+}

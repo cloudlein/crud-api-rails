@@ -23,4 +23,7 @@
 
 # Ignore key files for decrypting credentials and more.
 /config/*.key
-
+.idea/
+.gemini/
+.agents/
+skills-lock.json

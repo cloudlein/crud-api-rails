@@ -20,17 +20,23 @@ class BooksController < ApplicationController
   # POST /books
   def create
     service = Books::CreateService.new(book_params)
-    service.call
-    @book = service.book
-    render :create, status: :created
+    if service.call
+      @book = service.book
+      render :create, status: :created
+    else
+      render json: { errors: service.book.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /books/:id
   def update
     service = Books::UpdateService.new(params[:id], book_params)
-    service.call
-    @book = service.book
-    render :update, status: :ok
+    if service.call
+      @book = service.book
+      render :update, status: :ok
+    else
+      render json: { errors: service.book.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   # DELETE /books/:id

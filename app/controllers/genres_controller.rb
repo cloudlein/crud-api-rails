@@ -20,17 +20,23 @@ class GenresController < ApplicationController
   # POST /genres
   def create
     service = Genres::CreateService.new(genre_params)
-    service.call
-    @genre = service.genre
-    render :create, status: :created
+    if service.call
+      @genre = service.genre
+      render :create, status: :created
+    else
+      render json: { errors: service.genre.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /genres/:id
   def update
     service = Genres::UpdateService.new(params[:id], genre_params)
-    service.call
-    @genre = service.genre
-    render :update, status: :ok
+    if service.call
+      @genre = service.genre
+      render :update, status: :ok
+    else
+      render json: { errors: service.genre.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   # DELETE /genres/:id

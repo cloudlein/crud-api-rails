@@ -19,17 +19,23 @@ class AuthorsController < ApplicationController
   # POST /authors
   def create
     service = Authors::CreateService.new(author_params)
-    service.call
-    @author = service.author
-    render :create, status: :created
+    if service.call
+      @author = service.author
+      render :create, status: :created
+    else
+      render json: { errors: service.author.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   # PATCH/PUT /authors/:id
   def update
     service = Authors::UpdateService.new(params[:id], author_params)
-    service.call
-    @author = service.author
-    render :update, status: :ok
+    if service.call
+      @author = service.author
+      render :update, status: :ok
+    else
+      render json: { errors: service.author.errors.full_messages }, status: :unprocessable_entity
+    end
   end
 
   # DELETE /authors/:id

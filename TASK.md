@@ -83,7 +83,7 @@ Indexes: index_users_on_email (unique)
   - [x] All controllers (`BooksController`, `AuthorsController`, `GenresController`, `UsersController`) delegating CUD operations to their respective services.
 - [x] **Background Jobs**: Integrate `SolidQueue` for asynchronous operations.
 
-## Phase 7: Testing & Documentation (Pending)
+## Phase 7: Testing & Documentation (Completed)
 *Objective: Ensure quality and discoverability.*
 
 ### Unit Tests
@@ -97,10 +97,10 @@ Indexes: index_users_on_email (unique)
   - `author_spec.rb` — presence validations, `has_many :books` association.
   - `genre_spec.rb` — presence/uniqueness validations, `has_and_belongs_to_many :books`.
 - [x] **Query Object Specs** (`spec/queries/`)
-  - `book_query_spec.rb` — filtering by title/author/genre, sorting asc/desc.
+  - `book_query_spec.rb` — filtering by title/author_id/genre_id, sorting asc/desc.
   - `author_query_spec.rb` — filtering by name, sorting.
   - `genre_query_spec.rb` — filtering by name.
-- [ ] **Controller / Request Specs** (`spec/requests/`)
+- [x] **Controller / Request Specs** (`spec/requests/`)
   - `books_spec.rb` — CRUD happy paths + validation errors + 404 handling.
   - `authors_spec.rb` — CRUD + nested `authors/:id/books` endpoint.
   - `genres_spec.rb` — CRUD + nested `genres/:id/books` endpoint.
@@ -110,4 +110,4 @@ Indexes: index_users_on_email (unique)
   - `users.rb`, `books.rb`, `authors.rb`, `genres.rb`.
 
 ### Documentation
-- [ ] **OpenAPI/Swagger**: Integrate `rswag` for automated API documentation.
+- [x] **OpenAPI/Swagger**: Integrate `rswag` for automated API documentation.

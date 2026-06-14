@@ -4,6 +4,8 @@ source "https://rubygems.org"
 gem "rails", "~> 8.1.3"
 # Use postgresql as the database for Active Record
 gem "pg", "~> 1.1"
+# Required for some gems in Ruby 4.0.0+
+gem "ostruct"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
@@ -20,6 +22,7 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "shoulda-matchers"
+  gem 'rswag-specs'
 end
 
 gem "pagy", "~> 43.5"
@@ -27,3 +30,4 @@ gem "jbuilder"
 gem "bcrypt", "~> 3.1.22"
 gem "jwt"
 gem "solid_queue"
+gem 'rswag'

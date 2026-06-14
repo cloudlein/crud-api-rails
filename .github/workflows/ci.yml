@@ -42,7 +42,7 @@ jobs:
 
       - name: Create queue database
         run: |
-          PGPASSWORD=asdf psql -h localhost -U asdf -c "CREATE DATABASE crud_api_rails_queue_test;"
+          PGPASSWORD=asdf psql -h localhost -U asdf -d postgres -c "CREATE DATABASE crud_api_rails_queue_test;"
 
       - name: Run CI pipeline
         run: bin/ci

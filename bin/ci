@@ -1,6 +1,8 @@
-#!/usr/bin/env ruby.exe
-require_relative "../config/boot"
-require "active_support/continuous_integration"
+#!/usr/bin/env bash
+set -e
 
-CI = ActiveSupport::ContinuousIntegration
-require_relative "../config/ci.rb"
+echo "=== Setting up test database ==="
+bundle exec rails db:schema:load
+
+echo "=== Running RSpec tests ==="
+bundle exec rspec --format progress

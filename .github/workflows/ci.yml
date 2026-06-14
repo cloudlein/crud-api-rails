@@ -28,6 +28,7 @@ jobs:
     env:
       RAILS_ENV: test
       DATABASE_URL: "postgres://asdf:asdf@localhost:5432/crud_api_rails_test"
+      QUEUE_DATABASE_URL: "postgres://asdf:asdf@localhost:5432/crud_api_rails_queue_test"
 
     steps:
       - name: Checkout code
@@ -38,6 +39,10 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Create queue database
+        run: |
+          PGPASSWORD=asdf psql -h localhost -U asdf -c "CREATE DATABASE crud_api_rails_queue_test;"
 
       - name: Run CI pipeline
         run: bin/ci
